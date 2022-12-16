@@ -52,14 +52,35 @@ minHeapNode* getNode(char c, int freq, minHeapNode* left, minHeapNode* right)
 
 void encode(minHeapNode* root, string s , map<char, string> &huffmanCode)
 {
-//encoding function
+    if (root == nullptr)
+        return;
+
+    if (!root->left && !root->right) {
+        huffmanCode[root->c] = s;
+    }
+
+    encode(root->left, s + "0", huffmanCode);
+    encode(root->right, s + "1", huffmanCode);
 }
 
 
 string decode(minHeapNode* root , string s)
 {
     string decode = "";
-   //decoding function
+    minHeapNode* temp = root;
+    for (int i=0;i<s.size();i++)
+    {
+        if (s[i] == '0')
+            temp = temp->left;
+        else
+            temp = temp->right;
+
+        if (!(temp->left && temp->right))
+        {
+            decode += temp->c;
+            temp = root;
+        }
+    }
     return decode;
 }
 minHeapNode* root1;
