@@ -8,7 +8,6 @@
 #include "string"
 #include <check.h>
 #include <minify.cpp>
-
 using namespace std;
 
 string format(string xml)

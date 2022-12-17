@@ -14,6 +14,7 @@
 #include <cctype>
 #include <cstdio>
 #include <list>
+//#include <check.h>
 #define IOS ios_base::sync_with_stdio(0);cin.tie(0); cout.tie(0);
 #define ll long long
 #define MAXsize 222
