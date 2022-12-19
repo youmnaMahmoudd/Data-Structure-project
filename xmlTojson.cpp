@@ -4,28 +4,13 @@
 #include <vector>
 #include <cstdlib>
 #include <stack>
+#include "Xml_to_Json.h"
 using namespace std;
-class Node
-{
-public:
-    string key;
-    string value;
-    vector<Node *> children;
-};
-class Tree
-{
-public:
-    Node *root;
-    string XMLToJson(int level = 0, Node *parent = nullptr);
-    void setroot(Node *t);
-    void addNode(Node *node, Node *parent);
-};
-using namespace std;
-void Tree:: setroot(Node *t)
+void Tree:: setroot(JsonNode *t)
 {
     root = t;
 }
-void Tree ::addNode(Node *node, Node *parent)
+void Tree ::addNode(JsonNode *node, JsonNode *parent)
 {
     if (parent == nullptr)
     {
@@ -36,25 +21,25 @@ void Tree ::addNode(Node *node, Node *parent)
 Tree parse(string xml)
 {
     Tree data;
-    stack<Node *> holdsParent;
+    stack<JsonNode *> holdsParent;
     string roottag;
     int idx1 = 0, idx2=0;
     idx1 = xml.find("<", idx1);
     idx2 = xml.find(">", idx1);
     roottag = xml.substr(idx1 + 1, idx2 - idx1 - 1);
-    Node *root = new Node;
-    Node *node = new Node;
+    JsonNode *root = new JsonNode;
+    JsonNode *node = new JsonNode;
     node->key = roottag;
     data.setroot(root);
     data.addNode(node, root);
     idx1 = xml.find("<", idx2);
     idx2 = xml.find(">", idx1);
-    Node *parent = node;
+    JsonNode *parent = node;
     while (xml.find("<", idx2) != -1)
     {
         if (xml.substr(idx1 + 1, 1) != "/")
         {
-            Node *newnode = new Node;
+            JsonNode *newnode = new JsonNode;
             newnode->key = xml.substr(idx1 + 1, idx2 - idx1 - 1);
             idx1 = xml.find("<", idx2);
             data.addNode(newnode, parent);
@@ -90,7 +75,7 @@ Tree parse(string xml)
     }
     return data;
 }
-string Tree ::XMLToJson(int level , Node *parent )
+string Tree ::XMLToJson(int level , JsonNode *parent )
 {
     string S;
     string json = "";
@@ -102,7 +87,7 @@ string Tree ::XMLToJson(int level , Node *parent )
 
     for (int i = 0; i < parent->children.size(); ++i)
     {
-        Node *node = parent->children[i]; // creating poienters to children of the parent node
+        JsonNode *node = parent->children[i]; // creating poienters to children of the parent node
         string Spacing = "\t";
         for (int i = 0; i < level; ++i)
         {
@@ -141,19 +126,19 @@ string Tree ::XMLToJson(int level , Node *parent )
     string x = "\t";
     return "{\n" + json + "\n" + S + "}";
 }
-int main()
-{
-    string text;
-    string xml="";
-    vector<string> line;
-    while (getline(cin, text)) {
-        if (text.empty())break;
-        else {
-            line.push_back(text);
-            xml+=text;
-        }
-    }
-    Tree t =parse(xml);
-    string sr = t.XMLToJson();
-    cout<<sr;
-}
+//int main()
+//{
+//    string text;
+//    string xml="";
+//    vector<string> line;
+//    while (getline(cin, text)) {
+//        if (text.empty())break;
+//        else {
+//            line.push_back(text);
+//            xml+=text;
+//        }
+//    }
+//    Tree t =parse(xml);
+//    string sr = t.XMLToJson();
+//    cout<<sr;
+//}

@@ -5,11 +5,13 @@
 #include <QMessageBox>
 #include <queue>
 #include <format.h>
-//#include <check.h>
+#include <check.h>
+#include <check.cpp>
 #include <correct.cpp>
 #include <compression.cpp>
 #include <minify.h>
-#include <check.cpp>
+#include <Xml_to_Json.h>
+#include <xmlTojson.cpp>
 
 using namespace std;
 
@@ -164,8 +166,8 @@ void MainWindow::on_MinifyButton_clicked()
 void MainWindow::on_JSONButton_clicked()
 {
     QString Qin = ui->InputText->toPlainText();
-//    Tree t = parse(xml);
-//    string sr =t.XMLToJson();
-//    ui->OutputText->setPlainText(QString::fromStdString(sr));
+    Tree t = parse(Qin.toStdString());
+    string sr =t.XMLToJson();
+    ui->OutputText->setPlainText(QString::fromStdString(sr));
 }
 

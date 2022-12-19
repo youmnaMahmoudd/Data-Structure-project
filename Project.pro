@@ -15,18 +15,26 @@ SOURCES += \
     format.cpp \
     main.cpp \
     mainwindow.cpp \
-    minify.cpp
+    minify.cpp \
+    xmlTojson.cpp
 
 HEADERS += \
     check.h \
     format.h \
     mainwindow.h \
-    minify.h
+    minify.h \
+    Xml_to_Json.h
 
 FORMS += \
     mainwindow.ui
+
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+
+RESOURCES += \
+    Icons.qrc

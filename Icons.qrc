@@ -1,0 +1,7 @@
+<!DOCTYPE RCC><RCC version="1.0">
+ <qresource>
+    <file>icons/add.png</file>
+    <file>icons/clear.png</file>
+    <file>icons/save-as.png</file>
+ </qresource>
+ </RCC>
