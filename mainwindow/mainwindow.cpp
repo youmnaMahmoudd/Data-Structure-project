@@ -7,19 +7,29 @@
 #include <format.h>
 #include <check.h>
 #include <check.cpp>
-#include <correct.cpp>
 #include <compression.cpp>
 #include <minify.h>
 #include <Xml_to_Json.h>
 #include <xmlTojson.cpp>
+#include <search.h>
+#include <search.cpp>
+#include <QInputDialog>
+#include <netAnalysis.h>
+#include <string.h>
+#include <visualize.cpp>
 
+#include <QFile>
+#include <QTextStream>
+#include <QStandardItemModel>
+#include <QDebug>
+#include <QPixmap>
+#include <fstream>
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
     ui->setupUi(this);
         QRect rect(2,2,262,26);
         QRegion region(rect, QRegion::Ellipse);
@@ -28,18 +38,18 @@ MainWindow::MainWindow(QWidget *parent)
         ui->CheckButton->setMask(region);
         ui->MinifyButton->setMask(region);
         ui->PretifyButton->setMask(region);
-        ui->GraphButton->setMask(region);
         ui->compressionButton->setMask(region);
-        QRect rect1(2,2,696,36);
-        QRegion region1(rect1, QRegion::Ellipse);
-        ui->GraphButton->setMask(region1);
+//        QPixmap pix("Graph.png");
+//        ui->photo->setPixmap(pix);
+        ui->photo->setScaledContents(true);
+
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
-
 
 //ToolBar: adding file to input text
 void MainWindow::on_actionAdd_triggered()
@@ -81,6 +91,7 @@ void MainWindow::on_actionClear_triggered()
 {
     ui->InputText->setPlainText("");
     ui->OutputText->setPlainText("");
+
 }
 
 
@@ -171,3 +182,76 @@ void MainWindow::on_JSONButton_clicked()
     ui->OutputText->setPlainText(QString::fromStdString(sr));
 }
 
+//Most Influnecer Button
+void MainWindow::on_InfluencerButton_clicked()
+{
+    QString Qin = ui->InputText->toPlainText();
+    if(!Qin.isEmpty()){
+        string s = mostInfluencer(Qin.toStdString());
+        ui->OutputText->setPlainText(QString::fromStdString(s));
+    }
+    else
+        QMessageBox::warning(this,"Warning","Please enter a valid XML!");
+
+}
+
+// Most Active button
+void MainWindow::on_ActiveButton_clicked()
+{
+    QString Qin = ui->InputText->toPlainText();
+    if(!Qin.isEmpty()){
+        string s = mostActive(Qin.toStdString());
+        ui->OutputText->setPlainText(QString::fromStdString(s));
+    }
+    else
+        QMessageBox::warning(this,"Warning","Please enter a valid XML!");
+}
+
+//Mutual Friends Button
+void MainWindow::on_MutualButton_clicked()
+{
+    QString Qin = ui->InputText->toPlainText();
+    bool ok;
+    QString id1 = QInputDialog::getText(this, tr("Mutual friends"),
+                                         tr("ID1:"), QLineEdit::Normal,
+                                         "", &ok);
+    QString id2 = QInputDialog::getText(this, tr("Mutual friends"),
+                                         tr("ID2:"), QLineEdit::Normal,
+                                         "", &ok);
+    if (ok && !id1.isEmpty() && !id2.isEmpty() && !Qin.isEmpty()){
+        int ID1 = stoi(id1.toStdString());
+        int ID2 = stoi(id2.toStdString());
+        string s = mutualFriends(ID1,ID2,Qin.toStdString());
+        ui->OutputText->setPlainText(QString::fromStdString(s));
+    }
+    else
+        QMessageBox::warning(this,"Warning","Please enter a valid ID or XML!");
+}
+
+//Suggest Friends Button
+void MainWindow::on_SuggesButton_clicked()
+{
+    QString Qin = ui->InputText->toPlainText();
+    bool ok;
+    QString id = QInputDialog::getText(this, tr("Suggest friends"),
+                                         tr("ID:"), QLineEdit::Normal,
+                                         "", &ok);
+
+    int ID = stoi(id.toStdString());
+    string s = suggestFriends(ID,Qin.toStdString());
+    ui->OutputText->setPlainText(QString::fromStdString(s));
+
+
+}
+
+//Post Search Button
+void MainWindow::on_actionPost_triggered()
+{
+
+}
+
+//Visualize Button
+void MainWindow::on_VisualizeButton_clicked()
+{
+
+}
