@@ -91,7 +91,7 @@ void MainWindow::on_actionClear_triggered()
 {
     ui->InputText->setPlainText("");
     ui->OutputText->setPlainText("");
-
+    ui->photo->clear();
 }
 
 
@@ -236,22 +236,42 @@ void MainWindow::on_SuggesButton_clicked()
     QString id = QInputDialog::getText(this, tr("Suggest friends"),
                                          tr("ID:"), QLineEdit::Normal,
                                          "", &ok);
-
-    int ID = stoi(id.toStdString());
-    string s = suggestFriends(ID,Qin.toStdString());
-    ui->OutputText->setPlainText(QString::fromStdString(s));
-
-
+    if (ok && !id.isEmpty() && !Qin.isEmpty()){
+        int ID = stoi(id.toStdString());
+        string s = suggestFriends(ID,Qin.toStdString());
+        ui->OutputText->setPlainText(QString::fromStdString(s));
+    }
+    else
+        QMessageBox::warning(this,"Warning","Please enter a valid ID or XML!");
 }
 
 //Post Search Button
 void MainWindow::on_actionPost_triggered()
 {
-
+    QString Qin = ui->InputText->toPlainText();
+    bool ok;
+    QString id = QInputDialog::getText(this, tr("Post search"),
+                                         tr("type here:"), QLineEdit::Normal,
+                                         "", &ok);
+    if (ok && !id.isEmpty() && !Qin.isEmpty()){
+        string QSin = Qin.toStdString();
+        string keyword = id.toStdString();
+        int count;
+        vector<string> ans=convert(QSin);
+        count =xmlprase(ans);
+        string temp=  searchPosts(keyword,count);
+        ui->OutputText->setPlainText(QString::fromStdString(temp));
+    }
+    else
+        QMessageBox::warning(this,"Warning","Please enter a valid ID or XML!");
 }
 
 //Visualize Button
 void MainWindow::on_VisualizeButton_clicked()
 {
-
+    remove ("D:/sho8l/Qt/projects/build-Project-Desktop_Qt_6_4_1_MinGW_64_bit-Debug/graph.dot.png");
+    QString z =ui->InputText->toPlainText();
+    string x=z.toStdString();
+    QPixmap Result=Graph_present(x);
+    ui->photo->setPixmap(Result);
 }
