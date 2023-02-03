@@ -1,6 +1,10 @@
 # Data-Structure-project
 
 
+The project is an XML Editor that can do various operations on XML files.
+</div>  
+
+
 ## Table of Contents
 1. [Background](#Background)
 2. [Technologies](#Technologies)
@@ -14,7 +18,7 @@ scheme (error correction, visualizing followers graph, network analysis, post se
 An example of the scheme can be found through this link: https://drive.google.com/file/d/1_GeHIjYQZEAZNu6ZxdXEotPnHhiKnaWn/view
 
 ## Technologies
-C++, C++/CLI
+C++, Qt
 
 ## Features
 * Browsing XML Files
